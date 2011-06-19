@@ -57,21 +57,32 @@ describe UsersController do
   			@attr = {:name => "", :email => "", :password => "", :password_confirmation => "" }
   		end
 
-		it "should not create a user" do
-			lambda do
-				post :create, :user => @attr
-			end.should_not change(User, :count)
-		end
-
-		it "should have the right title" do
-			post :create, :user => @attr
-			response.should have_selector("title", :content => "Sign up")
-		end
-
-		it "should render the 'new' page" do
-			post :create, :user => @attr
-			response.should render_template('new')
-		end
+  		it "should not create a user" do
+  			lambda do
+  				post :create, :user => @attr
+  			end.should_not change(User, :count)
+  		end
+  
+  		it "should have the right title" do
+  			post :create, :user => @attr
+  			response.should have_selector("title", :content => "Sign up")
+  		end
+  
+  		it "should render the 'new' page" do
+  			post :create, :user => @attr
+  			response.should render_template('new')
+  		end
+  		
+  		it "should create a user" do
+  		  lambda do
+  		    post :create, :user => @attr
+  		  end.should change(User, :count).by(1)
+  		end
+  		
+  		it "should redirect to the user show page" do
+  		  post :create, :user => @attr
+  		  response.should refirect_to(user_path(assigns(:user)))
+  		end
   	end
   end
 
